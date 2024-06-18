@@ -1,3 +1,6 @@
+// fruits 불러오기
+import { FRUITS } from "./fruits.js";
+
 import { CanvasSize, Walls } from "./size.js";
 
 const Engine = Matter.Engine;
@@ -6,10 +9,14 @@ const Runner = Matter.Runner;
 const Bodies = Matter.Bodies;
 const World = Matter.World;
 
-// 엔진 선언
+/**
+ * @return 엔진
+ */
 const engine = Engine.create();
 
-// 렌더 선언
+/**
+ * @return 렌더
+ */
 const render = Render.create({
   engine,
   element: document.querySelector("#box"),
@@ -21,10 +28,14 @@ const render = Render.create({
   },
 });
 
-// 벽 배치를 위한 world 선언
+/**
+ * @return 월드
+ */
 const world = engine.world;
 
-// 왼쪽 벽생성
+/**
+ * @return 왼쪽 벽
+ */
 const leftWall = Bodies.rectangle(
   Walls.left.x,
   Walls.left.y,
@@ -36,7 +47,9 @@ const leftWall = Bodies.rectangle(
   }
 );
 
-// 오른쪽 벽생성
+/**
+ * @return 오른쪽 벽
+ */
 const rightWall = Bodies.rectangle(
   Walls.right.x,
   Walls.right.y,
@@ -48,15 +61,20 @@ const rightWall = Bodies.rectangle(
   }
 );
 
-// 바닥 생성
+/**
+ * @return 바닥
+ */
 const ground = Bodies.rectangle(280, 820, 620, 60, {
   isStatic: true,
   render: { fillStyle: "#E6B143" },
 });
 
-// 바닥 생성
+/**
+ * @return 천장
+ */
 const topLine = Bodies.rectangle(310, 150, 620, 2, {
   isStatic: true,
+  isSensor: true,
   render: { fillStyle: "#E6B143" },
 });
 
@@ -64,3 +82,34 @@ World.add(world, [leftWall, rightWall, ground, topLine]);
 
 Render.run(render);
 Runner.run(engine);
+
+let currentBody = null;
+let currentFruit = null;
+
+/**
+ * 과일 떨어지는 함수
+ */
+const addFruit = () => {
+  const index = Math.floor(Math.random() * 5);
+
+  const fruit = FRUITS[index];
+
+  /**
+   * @return circle형태로 반환되는 과일
+   */
+  const body = Bodies.circle(CanvasSize.width / 2, 15, fruit.radius, {
+    index,
+    isSleeping: true,
+    render: {
+      sprite: { texture: `${fruit.name}.png` },
+    },
+    restitution: 0.5,
+  });
+
+  currentBody = body;
+  currentFruit = fruit;
+
+  World.add(world, body);
+};
+
+addFruit();

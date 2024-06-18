@@ -1,4 +1,7 @@
-// 렌더 캔버스 사이즈
+/**
+ * 렌더 캔버스 사이즈
+ * @return width, height
+ */
 export const CanvasSize = {
   width: 565, // 캔버스 넓이
   height: 850, // 캔버스 높이
@@ -7,6 +10,10 @@ export const CanvasSize = {
 const wallWidth = 30; // 벽의 넓이
 const wallHeight = 790; // 벽의 높이
 
+/**
+ * 벽 사이즈
+ * @return left, right : x, y, width, height
+ */
 export const Walls = {
   left: {
     x: wallWidth / 2,
