@@ -1,4 +1,4 @@
-import { CanvasSize } from "./size.js";
+import { CanvasSize, Walls } from "./size.js";
 
 const Engine = Matter.Engine;
 const Render = Matter.Render;
@@ -25,16 +25,28 @@ const render = Render.create({
 const world = engine.world;
 
 // 왼쪽 벽생성
-const leftWall = Bodies.rectangle(15, 395, 30, 790, {
-  isStatic: true, // 고정해주는 기능
-  render: { fillStyle: "#E6B143" }, // 색상 지정
-});
+const leftWall = Bodies.rectangle(
+  Walls.left.x,
+  Walls.left.y,
+  Walls.left.width,
+  Walls.left.height,
+  {
+    isStatic: true, // 고정해주는 기능
+    render: { fillStyle: "#E6B143" }, // 색상 지정
+  }
+);
 
 // 오른쪽 벽생성
-const rightWall = Bodies.rectangle(550, 395, 30, 790, {
-  isStatic: true, // 고정해주는 기능
-  render: { fillStyle: "#E6B143" }, // 색상 지정
-});
+const rightWall = Bodies.rectangle(
+  Walls.right.x,
+  Walls.right.y,
+  Walls.right.width,
+  Walls.right.height,
+  {
+    isStatic: true, // 고정해주는 기능
+    render: { fillStyle: "#E6B143" }, // 색상 지정
+  }
+);
 
 // 바닥 생성
 const ground = Bodies.rectangle(280, 820, 620, 60, {
