@@ -8,6 +8,7 @@ const Render = Matter.Render;
 const Runner = Matter.Runner;
 const Bodies = Matter.Bodies;
 const World = Matter.World;
+const Body = Matter.Body;
 
 /**
  * @return 엔진
@@ -86,6 +87,9 @@ Runner.run(engine);
 let currentBody = null;
 let currentFruit = null;
 
+// 조작을 제어하는 변수
+let disableAction = false;
+
 /**
  * 과일 떨어지는 함수
  */
@@ -110,6 +114,62 @@ const addFruit = () => {
   currentFruit = fruit;
 
   World.add(world, body);
+};
+
+// 키보드 입력 받을때 실행할 동작
+
+/**
+ * @param {number} length 왼쪽으로 이동하는 길이
+ */
+const moveLeft = (length) => {
+  Body.setPosition(currentBody, {
+    x: currentBody.position.x - length,
+    y: currentBody.position.y,
+  });
+};
+
+/**
+ * @param {number} length 오른쪽으로 이동하는 길이
+ */
+const moveRight = (length) => {
+  Body.setPosition(currentBody, {
+    x: currentBody.position.x + length,
+    y: currentBody.position.y,
+  });
+};
+
+const dropFruits = () => {
+  currentBody.isSleeping = false;
+
+  disableAction = true;
+
+  /**
+   * 과일 추가 딜레이 걸기
+   */
+  setTimeout(() => {
+    addFruit();
+
+    disableAction = false;
+  }, 1000);
+};
+
+// 키보드 입력받기
+window.onkeydown = (e) => {
+  if (disableAction) return;
+
+  switch (e.code) {
+    case "KeyA":
+      // 왼쪽으로 이동
+      moveLeft(10);
+      break;
+    case "KeyD":
+      // 오른쪽으로 이동
+      moveRight(10);
+      break;
+    case "KeyS":
+      dropFruits();
+      break;
+  }
 };
 
 addFruit();
